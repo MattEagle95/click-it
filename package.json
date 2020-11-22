@@ -1,0 +1,19 @@
+{
+  "name": "click-it",
+  "version": "1.0.0",
+  "description": "a multiplayer game made with nodejs and socketio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattEagle95/click-it.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MattEagle95/click-it/issues"
+  },
+  "homepage": "https://github.com/MattEagle95/click-it#readme"
+}
