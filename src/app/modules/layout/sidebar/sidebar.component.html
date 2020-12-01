@@ -1,0 +1,65 @@
+<div class="d-flex flex-column justify-items-end h-100">
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/processes" routerLinkActive="active">
+        <span data-feather="cpu"></span>
+        Processes
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/users" routerLinkActive="active">
+        <span data-feather="users"></span>
+        Users
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/settings" routerLinkActive="active">
+        <span data-feather="sliders"></span>
+        Settings
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/system" routerLinkActive="active">
+        <span data-feather="info"></span>
+        System
+      </a>
+    </li>
+  </ul>
+  <div class="mt-auto">
+    <div class="row m-1">
+      <div class="col">
+        {{ systeminfo[4] }}
+      </div>
+    </div>
+    <div class="row m-1">
+      <div class="col">
+        CPU
+      </div>
+      <div class="col">
+        {{ systeminfo[0] }} %
+      </div>
+      <div class="col">
+        <ngb-progressbar type="success" [value]='systeminfo[0]'>
+        </ngb-progressbar>
+      </div>
+    </div>
+    <div class="row m-1">
+      <div class="col">
+        RAM
+      </div>
+      <div class="col">
+        {{ (100 - systeminfo[1]["freeMemPercentage"]) }} %
+      </div>
+      <div class="col">
+        <ngb-progressbar type="success" [value]='(100 - systeminfo[1]["freeMemPercentage"])'>
+        </ngb-progressbar>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <button class="btn btn-block btn-outline-light rounded-0" style="height: 52px" placement="top"
+        ngbTooltip="Change name and password"><i data-feather="cpu"></i></button>
+      <button class="btn btn-block btn-outline-light rounded-0" style="height: 52px" placement="top"
+        ngbTooltip="Change name and password"><i data-feather="power"></i></button>
+    </div>
+  </div>
+</div>

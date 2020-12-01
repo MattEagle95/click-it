@@ -1,0 +1,89 @@
+<nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow mb-3">
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><span data-feather="info"></span> System</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+    data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link text-dark" routerLink="/processes" routerLinkActive="active">
+        Overview
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="mx-2" style="overflow: hidden;">
+  <div class="card-deck">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">PM2-UI</h5>
+        <div class="row">
+          <div class="col">
+            Version
+          </div>
+          <div class="col text-center">
+            1.0.0
+          </div>
+        </div>
+        <div class="ml-3">
+          <a href="#" class="text-secondary">Check for updates</a><br />
+          <a href="#" class="text-secondary">Changelog</a><br />
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            DB-Size
+          </div>
+          <div class="col text-center">
+            1 MB
+          </div>
+        </div>
+        <div class="ml-3">
+          <a href="#" class="text-danger">Reset Database</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Last updated 3 mins ago</small>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">System</h5>
+        <div class="row m-1">
+          <div class="col">
+            OSS
+          </div>
+          <div class="col text-center">
+            {{ systeminfo[4] }}
+          </div>
+        </div>
+        <div class="row m-1">
+          <div class="col">
+            CPU
+          </div>
+          <div class="col">
+            {{ systeminfo[0] }} %
+          </div>
+          <div class="col">
+            <ngb-progressbar type="success" [value]='systeminfo[0]'>
+            </ngb-progressbar>
+          </div>
+        </div>
+        <div class="row m-1">
+          <div class="col">
+            RAM
+          </div>
+          <div class="col">
+            {{ (100 - systeminfo[1]["freeMemPercentage"]) }} %
+          </div>
+          <div class="col">
+            <ngb-progressbar type="success" [value]='(100 - systeminfo[1]["freeMemPercentage"])'>
+            </ngb-progressbar>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Last updated 3 mins ago</small>
+      </div>
+    </div>
+  </div>
+</div>
