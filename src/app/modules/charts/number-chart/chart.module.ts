@@ -4,19 +4,14 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ListComponent } from './list/list.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from 'src/app/app-routing.module';
-import { CreateComponent } from './create/create.component';
-import { ProcessComponent } from './process.component';
-import { DeployComponent } from './deploy/deploy.component';
-import { ChartModule } from '../charts/number-chart/chart.module';
+import { NumberChartComponent } from './number-chart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    ProcessComponent,
-    CreateComponent,
-    ListComponent,
-    DeployComponent
+    NumberChartComponent
   ],
   imports: [
     BrowserModule,
@@ -25,14 +20,12 @@ import { ChartModule } from '../charts/number-chart/chart.module';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    ChartModule
+    NgxChartsModule,
+    BrowserAnimationsModule
   ],
   exports: [
-    ProcessComponent,
-    CreateComponent,
-    ListComponent
+    NumberChartComponent
   ],
   providers: [],
-  entryComponents: [CreateComponent]
 })
-export class ProcessModule { }
+export class ChartModule { }

@@ -15,6 +15,7 @@ import { SidebarComponent } from './modules/layout/sidebar/sidebar.component';
 import { HeaderComponent } from './modules/layout/header/header.component';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SystemComponent } from './modules/system/system.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SystemComponent } from './modules/system/system.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    ProcessModule
+    ProcessModule,
+    NgxChartsModule
   ],
   providers: [
     {
