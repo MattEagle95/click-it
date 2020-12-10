@@ -1,9 +1,9 @@
 <div class="d-flex flex-column justify-items-end h-100">
   <ul class="nav flex-column">
     <li class="nav-item">
-      <a class="nav-link" routerLink="/processes" routerLinkActive="active">
+      <a class="nav-link" routerLink="/process" routerLinkActive="active">
         <span data-feather="cpu"></span>
-        Processes
+        Process
       </a>
     </li>
     <li class="nav-item">
@@ -27,11 +27,11 @@
   </ul>
   <div class="mt-auto">
     <div class="row m-1">
-      <div class="col">
+      <div class="col" *ngIf="systeminfo">
         {{ systeminfo[4] }}
       </div>
     </div>
-    <div class="row m-1">
+    <div class="row m-1" *ngIf="systeminfo">
       <div class="col">
         CPU
       </div>
@@ -43,7 +43,7 @@
         </ngb-progressbar>
       </div>
     </div>
-    <div class="row m-1">
+    <div class="row m-1" *ngIf="systeminfo">
       <div class="col">
         RAM
       </div>

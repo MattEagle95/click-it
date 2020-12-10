@@ -16,6 +16,12 @@ import { HeaderComponent } from './modules/layout/header/header.component';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SystemComponent } from './modules/system/system.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { DecimalPipe } from '@angular/common';
+import { FeatherModule } from 'angular-feather';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { TabbarComponent } from './modules/layout/tabbar/tabbar.component';
+
+const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
 
 @NgModule({
   declarations: [
@@ -28,7 +34,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     NgbdModalConfirmAutofocus,
     SidebarComponent,
     HeaderComponent,
-    SystemComponent
+    SystemComponent,
+    TabbarComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +45,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ReactiveFormsModule,
     NgbModule,
     ProcessModule,
-    NgxChartsModule
+    NgxChartsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     {
@@ -51,10 +59,11 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           return configService.loadConfig();
         };
       }
-    }
+    },
+    DecimalPipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [NgbdModalConfirm,
-    NgbdModalConfirmAutofocus]
+    NgbdModalConfirmAutofocus],
 })
 export class AppModule { }

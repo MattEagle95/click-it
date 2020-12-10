@@ -1,0 +1,52 @@
+<nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow mb-3">
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><span data-feather="cpu"></span> Process
+    {{processId}}</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+    data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link text-dark" [routerLink]="['/process', processId, 'general']" routerLinkActive="active">
+        General
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-dark" routerLink="/processes" routerLinkActive="active">
+        Advanced
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-dark" routerLink="/processes" routerLinkActive="active">
+        Control flow
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-dark" routerLink="/process/1" routerLinkActive="active">
+        Logs
+      </a>
+    </li>
+  </ul>
+  <nav class="nav px-3 text-dark">
+    <button type="button" class="btn btn-sm btn-outline-secondary"><i data-feather="plus-circle"
+        class="text-success"></i>
+      Add</button>
+  </nav>
+</nav>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<div class="mx-2">
+  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addTab()">
+    <i data-feather="plus-circle" class="text-success"></i> Tabbar
+  </button>
+  <router-outlet></router-outlet>
+  <!-- New logs: {{ logs.length }}
+  <button type="button" class="btn btn-sm btn-outline-primary" (click)="scrollLock()">
+    Scroll lock <i data-feather="slash" class="text-primary"></i>
+  </button>
+  <div #logdiv style="background: black; font-family: 'JetBrains Mono', monospace; width: 100%; height: 500px; color: white; overflow: auto">
+    <div *ngFor="let log of logs">
+      {{log}}
+    </div>
+  </div> -->
+</div>

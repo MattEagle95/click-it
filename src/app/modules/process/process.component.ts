@@ -18,24 +18,6 @@ export class ProcessComponent implements OnInit, OnDestroy {
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.apiService.describe(this.id)
-        .pipe(
-          delay(5000),
-          repeat(),
-          retryWhen(errors => {
-            console.warn('no connection...')
-            return errors
-              .pipe(
-                delayWhen(() => timer(5000)),
-                tap(() => console.warn('retrying...'))
-              );
-          })
-        )
-        .subscribe((process: Process) => {
-          this.process = process;
-        })
-    );
   }
 
   ngOnDestroy() {

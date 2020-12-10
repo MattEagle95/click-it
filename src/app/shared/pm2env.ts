@@ -10,5 +10,8 @@ interface PM2ENV {
   version;
   autorestart;
   exec_interpreter;
+  exec_mode;
   unique_id;
+  instances;
+  env;
 }

@@ -57,8 +57,6 @@
     <div>Total items: {{ total$ | async }}</div>
 
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
-      <option [ngValue]="10">10 items per page</option>
-      <option [ngValue]="15">15 items per page</option>
       <option [ngValue]="25">25 items per page</option>
     </select>
 

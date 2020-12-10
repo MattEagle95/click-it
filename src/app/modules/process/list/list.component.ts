@@ -1,41 +1,102 @@
-import { Component, OnInit } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, interval, Observable, of, pipe, Subject, throwError, timer } from 'rxjs';
 import { delay, flatMap, repeat, takeUntil, repeatWhen, retryWhen, take, concatMap, tap, delayWhen } from 'rxjs/operators';
-import { ApiService } from 'src/app/shared/api.service';
 import { CreateComponent } from '../create/create.component';
+import * as Feather from 'feather-icons';
+import { SortableHeader, SortEvent } from 'src/app/shared/table/sortable.directive';
+import { ApiService } from 'src/app/shared/api.service';
+import { SocketService } from 'src/app/shared/socket.service';
+import { element } from 'protractor';
+import { TabbarService } from 'src/app/shared/tabbar.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css'],
+  providers: [ApiService, SocketService, DecimalPipe]
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements AfterViewInit {
+
+  ngAfterViewInit() {
+    Feather.replace();
+  }
+
+  countries$: Observable<Process[]>;
+  total$: Observable<number>;
+  systeminfo$: Observable<any>;
+  systeminfotext: any;
+
+  data: any[];
+
+  @ViewChildren(SortableHeader) headers: QueryList<SortableHeader>;
+
+  constructor(public service: ApiService, private modalService: NgbModal, private socketService: SocketService, private tabbarService: TabbarService) {
+    this.countries$ = service.countries$
+    this.total$ = service.total$
+    socketService.sendMessage('hi')
+    socketService.getMessage().subscribe(msg => {
+      console.log(msg)
+    })
+
+    this.countries$.subscribe(c => {
+      console.log(c)
+      this.data = c
+    });
+
+    socketService.getDeleted().subscribe(event => {
+      console.log('delete')
+      console.log(event)
+      let index = this.data.findIndex(element => element.name === event)
+      this.data.splice(index, 1);
+      return;
+    })
+
+    socketService.getEvent().subscribe(event => {
+      console.log('process: ' + event['process']['status'])
+
+      if (event['event'] === 'online') {
+        console.log('online2')
+        let proc: Process = this.data.find(element => element.pm_id === event['process']['pm_id'])
+
+        if (!proc) {
+          console.log(event['uiprocess'][0])
+          this.data.push(event['uiprocess'][0])
+        }
+
+        return;
+      }
+
+      let proc: Process = this.data.find(element => element.pm_id === event['process']['pm_id'])
+      if (proc) {
+        proc.pm2_env.status = event['process']['status']
+        proc.pm2_env.pm_uptime = event['process']['pm_uptime']
+      }
+    })
+  }
+
+  addTab() {
+    this.tabbarService.addTab({ name: 'Process list', route: 'process' })
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    this.service.sortColumn = column;
+    this.service.sortDirection = direction;
+  }
 
   processesObs: Subject<Process[]> = new Subject();
   processes: Process[] = [];
   logstr;
   loadingObs: Subject<boolean>[] = [];
   loading: boolean[] = [];
-
-  constructor(private apiService: ApiService, private modalService: NgbModal) { }
-
-  ngOnInit() {
-    this.apiService.list()
-      .pipe(
-        retryWhen(errors => {
-          return errors
-            .pipe(
-              delayWhen(() => timer(5000)),
-              tap(() => console.log('retrying123...'))
-            );
-        })
-      ).pipe(delay(5000), repeat())
-      .subscribe((processes: Process[]) => {
-        this.processesObs.next(processes);
-        this.processes = processes;
-      });
-  }
 
   getProcesses() {
     return this.processes.filter(x => x.name !== 'piwatch');
@@ -50,20 +111,14 @@ export class ListComponent implements OnInit {
     return null;
   }
 
-  trackProcess(index, process: Process) {
-    if (!process) {
-      return index;
-    }
-    return process.pm2_env.unique_id;
-  }
-
   create() {
-    const modalRef = this.modalService.open(CreateComponent);
+    console.log('test')
+    const modalRef = this.modalService.open(CreateComponent, { size: 'lg' });
     modalRef.componentInstance.name = 'World';
   }
 
   status() {
-    this.apiService.list()
+    this.service.list()
       .subscribe((processes: Process[]) => {
         this.processes = processes;
         console.log(processes);
@@ -71,7 +126,7 @@ export class ListComponent implements OnInit {
   }
 
   logs(name: string) {
-    this.apiService.logs(name)
+    this.service.logs(name)
       .subscribe((data) => {
         console.log(data);
         this.logstr = data;
@@ -79,14 +134,14 @@ export class ListComponent implements OnInit {
   }
 
   reload(name: string) {
-    this.apiService.reload(name)
+    this.service.reload(name)
       .subscribe((data) => {
         console.log(data);
       });
   }
 
   flush(name: string) {
-    this.apiService.reload(name)
+    this.service.reload(name)
       .subscribe((data) => {
         console.log(data);
       });
@@ -101,49 +156,15 @@ export class ListComponent implements OnInit {
   }
 
   restart(name: string) {
-    this.loadingObs['restart-' + name] = new Subject<boolean>();
-    this.loading['restart-' + name] = true;
-
-    // this.processesObs.pipe(
-    //   delay(1000),
-    //   takeUntil(this.loadingObs['restart-' + name])
-    // ).subscribe((data) => {
-    //   console.log('restart');
-    //   if (data.find(x => x.name === name && x.pm2_env.status === 'online')) {
-    //     console.log('online');
-    //     this.loadingObs['restart-' + name].next(true);
-    //     this.loading['restart-' + name] = false;
-    //   }
-    // });
-
-    this.apiService.restart(name)
-      .subscribe((data) => {
-        console.log(data);
-        this.loading['restart-' + name] = false;
-      });
+    this.socketService.restart(name)
   }
 
   stop(name: string) {
-    this.loadingObs['stop-' + name] = new Subject<boolean>();
-    this.loading['stop-' + name] = true;
+    this.socketService.stop(name)
+  }
 
-    this.processesObs.pipe(
-      delay(1000),
-      takeUntil(this.loadingObs['stop-' + name])
-    ).subscribe((data) => {
-      console.log('stop');
-      if (data.find(x => x.name === name && x.pm2_env.status === 'stopped')) {
-        console.log('online');
-        this.loadingObs['stop-' + name].next(true);
-        this.loading['stop-' + name] = false;
-      }
-    });
-
-    this.apiService.stop(name)
-      .subscribe((data) => {
-        console.log(data);
-        this.loading['stop-' + name] = false;
-      });
+  deleteProcess(name: string) {
+    this.socketService.delete(name)
   }
 
 }

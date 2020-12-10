@@ -10,13 +10,21 @@ import { CreateComponent } from './create/create.component';
 import { ProcessComponent } from './process.component';
 import { DeployComponent } from './deploy/deploy.component';
 import { ChartModule } from '../charts/number-chart/chart.module';
+import { FeatherModule } from 'angular-feather';
+import { allIcons } from 'angular-feather/icons';
+import { ViewComponent } from './view/view.component';
+import { AdvancedComponent } from './view/advanced/advanced.component';
+import { GeneralComponent } from './view/general/general.component';
 
 @NgModule({
   declarations: [
     ProcessComponent,
     CreateComponent,
     ListComponent,
-    DeployComponent
+    DeployComponent,
+    ViewComponent,
+    AdvancedComponent,
+    GeneralComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +33,8 @@ import { ChartModule } from '../charts/number-chart/chart.module';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    ChartModule
+    ChartModule,
+    FeatherModule.pick(allIcons)
   ],
   exports: [
     ProcessComponent,
