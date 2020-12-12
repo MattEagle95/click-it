@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
 import { TokenStorageService } from './token-storage.service';
+const path = require('path');
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class AuthService {
   }
 
   public login(name: string, password: string): Observable<any> {
-    return this.http.post(this.getUrl('login'), { name: name, password: password }).pipe(
+    return of('login').pipe(
+      delay(2000),
       tap((data: any) => {
         console.log(data.token);
         this.tokenStorageService.setAccessToken(data.token);
@@ -28,7 +30,7 @@ export class AuthService {
   }
 
   private getUrl(endpoint: string): string {
-    return `${this.configService.config.baseUrl}/${this.serviceEndpoint}/${endpoint}`;
+    return path.join(this.configService.config.baseUrl, this.serviceEndpoint, endpoint);
   }
 
 }

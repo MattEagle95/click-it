@@ -20,6 +20,9 @@ import { DecimalPipe } from '@angular/common';
 import { FeatherModule } from 'angular-feather';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { TabbarComponent } from './modules/layout/tabbar/tabbar.component';
+import { MainComponent } from './modules/layout/main/main.component';
+import { allIcons } from 'angular-feather/icons';
+import { DeleteConfirmationModalComponent } from './shared/modals/delete-confirmation-modal/delete-confirmation-modal.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
 
@@ -35,7 +38,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
     SidebarComponent,
     HeaderComponent,
     SystemComponent,
-    TabbarComponent
+    TabbarComponent,
+    MainComponent,
+    DeleteConfirmationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +51,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
     NgbModule,
     ProcessModule,
     NgxChartsModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    FeatherModule.pick(allIcons)
   ],
   providers: [
     {
@@ -64,6 +70,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
   ],
   bootstrap: [AppComponent],
   entryComponents: [NgbdModalConfirm,
-    NgbdModalConfirmAutofocus],
+    NgbdModalConfirmAutofocus, 
+    DeleteConfirmationModalComponent],
 })
 export class AppModule { }

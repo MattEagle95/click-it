@@ -83,6 +83,7 @@ export class AppComponent implements AfterViewInit {
 
   withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
       (click)="modal.close('Ok click')">Ok</button>`;
+  loaded = false
 
   open(name: string) {
     this._modalService.open(MODALS[name]);
@@ -91,6 +92,7 @@ export class AppComponent implements AfterViewInit {
   title = 'piwatch-ui';
 
   ngAfterViewInit() {
+    this.loaded = true
     Feather.replace();
   }
 

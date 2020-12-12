@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthComponent } from './modules/auth/auth.component';
+import { MainComponent } from './modules/layout/main/main.component';
 import { ListComponent } from './modules/process/list/list.component';
 import { ProcessComponent } from './modules/process/process.component';
 import { GeneralComponent } from './modules/process/view/general/general.component';
@@ -11,28 +13,39 @@ import { UserComponent } from './modules/user/user.component';
 
 const routes: Routes = [
   {
-    path: 'process',
-    component: ProcessComponent,
+    path: 'auth',
+    component: AuthComponent,
+  },
+  {
+    path: '',
+    component: MainComponent,
     children: [
+      { path: '',   redirectTo: '/process', pathMatch: 'full' },
       {
-        path: '',
-        component: ListComponent,
-      },
-      {
-        path: ':id',
-        component: ViewComponent,
+        path: 'process',
+        component: ProcessComponent,
         children: [
           {
-            path: 'general',
-            component: GeneralComponent,
+            path: '',
+            component: ListComponent,
+          },
+          {
+            path: ':id',
+            component: ViewComponent,
+            children: [
+              {
+                path: 'general',
+                component: GeneralComponent,
+              },
+            ]
           },
         ]
       },
+      { path: 'users', component: UserComponent },
+      { path: 'settings', component: SettingsComponent },
+      { path: 'system', component: SystemComponent },
     ]
-  },
-  { path: 'users', component: UserComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'system', component: SystemComponent },
+  }
 ];
 
 @NgModule({

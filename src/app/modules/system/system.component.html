@@ -12,81 +12,68 @@
     </li>
   </ul>
 </nav>
-<button type="button" class="btn btn-sm btn-outline-secondary" (click)="addTab()">
-  <i data-feather="plus-circle" class="text-success"></i> Tabbar
-</button>
-<div class="mx-2" style="overflow: hidden;">
-  <div class="card-deck">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">PM2-UI</h5>
-        <div class="row">
-          <div class="col">
-            Version
+<div class="mx-5" style="overflow: hidden;">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-5">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">PM2-UI</h5>
+          <div class="row">
+            <div class="col">
+              Version
+            </div>
+            <div class="col text-center">
+              1.0.0
+            </div>
           </div>
-          <div class="col text-center">
-            1.0.0
-          </div>
-        </div>
-        <div class="ml-3">
-          <a href="#" class="text-secondary">Check for updates</a><br />
-          <a href="#" class="text-secondary">Changelog</a><br />
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-            DB-Size
-          </div>
-          <div class="col text-center">
-            1 MB
+          <div class="row mt-3">
+            <div class="col">
+              DB-Size
+            </div>
+            <div class="col text-center">
+              1 MB
+            </div>
           </div>
         </div>
-        <div class="ml-3">
-          <a href="#" class="text-warning">Clean Database</a><br />
-          <a href="#" class="text-danger">Reset Database</a>
+        <div class="card-footer">
+          <div class="btn-group" role="group">
+            <button class="btn btn-outline-primary">Check for updates</button>
+            <button class="btn btn-outline-primary">Changelog</button>
+          </div>
         </div>
       </div>
-      <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Database</h5>
+          <div class="row mt-3">
+            <div class="col">
+              DB-Path
+            </div>
+            <div class="col text-center">
+              storage/db/db.sqlite3
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              DB-Size
+            </div>
+            <div class="col text-center">
+              1 MB
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">System</h5>
-        <div class="row m-1">
-          <div class="col">
-            OSS
-          </div>
-          <div class="col text-center">
-            {{ systeminfo[4] }}
-          </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Administration</h5>
+            <button class="btn btn-block btn-outline-primary border-0 text-left">Notifications</button>
+            <button class="btn btn-block btn-outline-primary border-0 text-left">Audit logs</button>
+            <button class="btn btn-block btn-outline-warning border-0 text-left">Clean Database</button>
+            <button class="btn btn-block btn-outline-danger border-0 text-left" (click)="resetDatabase()">Reset Database</button>
         </div>
-        <div class="row m-1">
-          <div class="col">
-            CPU
-          </div>
-          <div class="col">
-            {{ systeminfo[0] }} %
-          </div>
-          <div class="col">
-            <ngb-progressbar type="success" [value]='systeminfo[0]'>
-            </ngb-progressbar>
-          </div>
-        </div>
-        <div class="row m-1">
-          <div class="col">
-            RAM
-          </div>
-          <div class="col">
-            {{ (100 - systeminfo[1]["freeMemPercentage"]) }} %
-          </div>
-          <div class="col">
-            <ngb-progressbar type="success" [value]='(100 - systeminfo[1]["freeMemPercentage"])'>
-            </ngb-progressbar>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
       </div>
     </div>
   </div>
