@@ -1,0 +1,10 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"> New logs: {{ logs.length }}
+<button type="button" class="btn btn-sm btn-outline-primary" (click)="scrollLock()">
+    Scroll lock <i data-feather="slash" class="text-primary"></i>
+  </button>
+<div #logdiv style="background: black; font-family: 'JetBrains Mono', monospace; width: 100%; height: 500px; color: white; overflow: auto">
+    <div *ngFor="let log of logs">
+        {{log}}
+    </div>
+</div>

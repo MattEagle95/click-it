@@ -23,6 +23,7 @@ import { TabbarComponent } from './modules/layout/tabbar/tabbar.component';
 import { MainComponent } from './modules/layout/main/main.component';
 import { allIcons } from 'angular-feather/icons';
 import { DeleteConfirmationModalComponent } from './shared/modals/delete-confirmation-modal/delete-confirmation-modal.component';
+import { PipeModule } from './shared/pipe/pipe.module';
 
 const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
 
@@ -52,7 +53,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
     ProcessModule,
     NgxChartsModule,
     SocketIoModule.forRoot(config),
-    FeatherModule.pick(allIcons)
+    FeatherModule.pick(allIcons),
+    PipeModule
   ],
   providers: [
     {
@@ -70,7 +72,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
   ],
   bootstrap: [AppComponent],
   entryComponents: [NgbdModalConfirm,
-    NgbdModalConfirmAutofocus, 
+    NgbdModalConfirmAutofocus,
     DeleteConfirmationModalComponent],
 })
 export class AppModule { }

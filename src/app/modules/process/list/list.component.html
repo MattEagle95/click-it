@@ -1,103 +1,85 @@
-<form>
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="form-group form-inline">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text"><span data-feather="search"></span></div>
-        </div>
-        <input type="text" class="form-control form-control-sm" id="searchTerm" name="searchTerm"
-          [(ngModel)]="service.searchTerm" placeholder="Search...">
-      </div>
-      <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
-    </div>
-    <div>
-      <div class="d-flex justify-content-between align-items-center">
+<nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow mb-3">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0" href="#"><span data-feather="cpu"></span> Process</a>
+    <input class="form-control form-control-dark ml-3" style="border: 1px solid white" type="text" id="searchTerm" name="searchTerm" [(ngModel)]="service.searchTerm" placeholder="Search" aria-label="Search">
+    <nav class="nav pl-3 text-dark">
         <div class="btn-group mr-3">
-          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="create()">
-            <i data-feather="plus-circle" class="text-success"></i> Add
-          </button>
-          <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle-split" ngbDropdownToggle></button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem>Scriptpath</button>
-              <button ngbDropdownItem>JSON path</button>
-              <button ngbDropdownItem>Custom options</button>
-            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="create()">
+        <div class="d-flex justify-content-between align-items-center">
+          <i data-feather="plus-circle" class="text-success"></i>
+          <div class="ml-1">
+            Add
           </div>
         </div>
+      </button>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle-split" ngbDropdownToggle></button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <button ngbDropdownItem>Scriptpath</button>
+                    <button ngbDropdownItem>JSON path</button>
+                    <button ngbDropdownItem>Custom options</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</nav>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="addTab()">
-          <i data-feather="plus-circle" class="text-success"></i> Tabbar
-        </button>
-      </div>
-    </div>
-  </div>
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th style="width: 25px"></th>
-        <th scope="col">#</th>
-        <th scope="col" sortable="interpreter" (sort)="onSort($event)">Interpreter</th>
-        <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
-        <th scope="col" sortable="version" (sort)="onSort($event)">Version</th>
-        <th scope="col" width="100px">CPU</th>
-        <th scope="col">Memory</th>
-        <th scope="col">Status</th>
-        <th scope="col">Autorestart</th>
-        <th scope="col">Mode</th>
-        <th scope="col">Uptime</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let country of data">
-        <!-- <td>
+<form>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th style="width: 25px"></th>
+                <th scope="col">#</th>
+                <th scope="col" sortable="interpreter" (sort)="onSort($event)">Interpreter</th>
+                <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+                <th scope="col" sortable="version" (sort)="onSort($event)">Version</th>
+                <th scope="col" width="100px">CPU</th>
+                <th scope="col">Memory</th>
+                <th scope="col">Mode</th>
+                <th scope="col">Uptime</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let country of data" [ngClass]="{'has-animation-online': country.pm2_env?.status === 'online', 'has-animation-offline': country.pm2_env?.status === 'stopped'}">
+                <!-- <td>
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck1">
             <label class="custom-control-label" for="customCheck1"> </label>
           </div>
         </td> -->
-        <td>
-          <i-feather name="cpu"
-            [ngClass]="{'text-success': country.pm2_env?.status === 'online', 'text-warning': (country.pm2_env?.status === 'launching' || country.pm2_env?.status === 'stopping'), 'text-danger': country.pm2_env?.status === 'stopped'}"
-            placement="top" ngbTooltip="Online"></i-feather>
-        </td>
-        <th scope="row">{{ country.pm_id }}</th>
-        <td>{{ country.pm2_env?.exec_interpreter }}</td>
-        <td>{{ country.name }}</td>
-        <td>{{ country.pm2_env?.version }}</td>
-        <td>{{ country.monit?.cpu }} %</td>
-        <td>{{(country.monit?.memory / 1000000).toFixed(2)}} mb</td>
-        <td>{{ country.pm2_env?.status }}</td>
-        <td>{{ country.pm2_env?.autorestart }}</td>
-        <td>{{ country.pm2_env?.exec_mode }}</td>
-        <td>{{ country.pm2_env?.pm_uptime }}</td>
-        <td class="text-right">
-          <i-feather name="more-horizontal" class="ico text-primary" placement="top" ngbTooltip="Details"
-            [routerLink]="['/process', country.pm_id]"></i-feather>
-          <i-feather name="refresh-cw" *ngIf="country.pm2_env?.status === 'online'" class="ico text-primary"
-            (click)="restart(country.name)" placement="top" ngbTooltip="Restart"></i-feather>
-          <i-feather name="stop-circle" *ngIf="country.pm2_env?.status === 'online'" class="ico text-danger"
-            placement="top" ngbTooltip="Stop" (click)="stop(country.name)"></i-feather>
-          <i-feather name="play-circle" *ngIf="country.pm2_env?.status !== 'online'" class="ico text-success"
-            placement="top" ngbTooltip="Start" (click)="restart(country.name)"></i-feather>
-          <i-feather name="trash" class="ico text-danger" placement="top" ngbTooltip="Delete"
-            (click)="deleteProcess(country.name)"></i-feather>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+                <td>
+                    <i-feather name="cpu" [ngClass]="{'text-success': country.pm2_env?.status === 'online', 'text-warning': (country.pm2_env?.status === 'launching' || country.pm2_env?.status === 'stopping'), 'text-danger': country.pm2_env?.status === 'stopped'}" placement="top"
+                        ngbTooltip="Online"></i-feather>
+                </td>
+                <th scope="row">{{ country.pm_id }}</th>
+                <td>{{ country.pm2_env?.exec_interpreter }}</td>
+                <td>{{ country.name }}</td>
+                <td>{{ country.pm2_env?.version }}</td>
+                <td>{{ country.monit?.cpu }} %</td>
+                <td>{{(country.monit?.memory / 1000000).toFixed(2)}} mb</td>
+                <td>{{ country.pm2_env?.exec_mode }}</td>
+                <td>{{ country.pm2_env?.pm_uptime | dateAgo }}</td>
+                <td class="text-right">
+                    <i-feather name="more-horizontal" class="ico text-primary" placement="top" ngbTooltip="Details" [routerLink]="['/process', country.pm_id]"></i-feather>
+                    <i-feather name="refresh-cw" *ngIf="country.pm2_env?.status === 'online'" class="ico text-primary" (click)="restart(country.name)" placement="top" ngbTooltip="Restart"></i-feather>
+                    <i-feather name="stop-circle" *ngIf="country.pm2_env?.status === 'online'" class="ico text-danger" placement="top" ngbTooltip="Stop" (click)="stop(country.name)"></i-feather>
+                    <i-feather name="play-circle" *ngIf="country.pm2_env?.status !== 'online'" class="ico text-success" placement="top" ngbTooltip="Start" (click)="restart(country.name)"></i-feather>
+                    <i-feather name="trash" class="ico text-danger" placement="top" ngbTooltip="Delete" (click)="deleteProcess(country.name)"></i-feather>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-  <div class="d-flex justify-content-between align-items-center p-2">
-    <div>Total items: {{ total$ | async }}</div>
+    <div class="d-flex justify-content-between align-items-center p-2">
+        <div>Total items: {{ total$ | async }}</div>
 
-    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
       <option [ngValue]="25">25 items per page</option>
     </select>
 
-    <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
-    </ngb-pagination>
-  </div>
+        <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+        </ngb-pagination>
+    </div>
 
 </form>
 

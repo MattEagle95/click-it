@@ -27,9 +27,44 @@
     </li>
   </ul>
 </nav>
-<div class="row">
-  <div class="col-3"></div>
-  <div class="col-6">
+<div class="row h-100">
+  <nav class="col-2 bg-light">
+    <div class="d-flex flex-column justify-items-end h-100">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/process" routerLinkActive="active">
+            <span data-feather="cpu"></span>
+            Process
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">
+            <span data-feather="users"></span>
+            Users
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/monitoring" routerLinkActive="active">
+            <span data-feather="pie-chart"></span>
+            Monitoring
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/settings" routerLinkActive="active">
+            <span data-feather="sliders"></span>
+            Settings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/system" routerLinkActive="active">
+            <span data-feather="info"></span>
+            System
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="col-10">
     <div class="card">
       <div class="card-body">
         <form [formGroup]="form">

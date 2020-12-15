@@ -5,6 +5,7 @@ import { MainComponent } from './modules/layout/main/main.component';
 import { ListComponent } from './modules/process/list/list.component';
 import { ProcessComponent } from './modules/process/process.component';
 import { GeneralComponent } from './modules/process/view/general/general.component';
+import { LogsComponent } from './modules/process/view/logs/logs.component';
 import { ViewComponent } from './modules/process/view/view.component';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SystemComponent } from './modules/system/system.component';
@@ -20,7 +21,7 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      { path: '',   redirectTo: '/process', pathMatch: 'full' },
+      { path: '',   redirectTo: 'process', pathMatch: 'full' },
       {
         path: 'process',
         component: ProcessComponent,
@@ -33,9 +34,14 @@ const routes: Routes = [
             path: ':id',
             component: ViewComponent,
             children: [
+              { path: '',   redirectTo: 'general', pathMatch: 'full' },
               {
                 path: 'general',
                 component: GeneralComponent,
+              },
+              {
+                path: 'logs',
+                component: LogsComponent,
               },
             ]
           },

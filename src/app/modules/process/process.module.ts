@@ -15,6 +15,9 @@ import { allIcons } from 'angular-feather/icons';
 import { ViewComponent } from './view/view.component';
 import { AdvancedComponent } from './view/advanced/advanced.component';
 import { GeneralComponent } from './view/general/general.component';
+import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
+import { PipeModule } from 'src/app/shared/pipe/pipe.module';
+import { LogsComponent } from './view/logs/logs.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,8 @@ import { GeneralComponent } from './view/general/general.component';
     DeployComponent,
     ViewComponent,
     AdvancedComponent,
-    GeneralComponent
+    GeneralComponent,
+    LogsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ import { GeneralComponent } from './view/general/general.component';
     ReactiveFormsModule,
     NgbModule,
     ChartModule,
-    FeatherModule.pick(allIcons)
+    FeatherModule.pick(allIcons),
+    PipeModule
   ],
   exports: [
     ProcessComponent,

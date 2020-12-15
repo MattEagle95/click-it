@@ -1,8 +1,8 @@
 import { DecimalPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, interval, Observable, of, pipe, Subject, throwError, timer } from 'rxjs';
-import { delay, flatMap, repeat, takeUntil, repeatWhen, retryWhen, take, concatMap, tap, delayWhen } from 'rxjs/operators';
+import { BehaviorSubject, Observable, interval, of, pipe, Subject, throwError, timer } from 'rxjs';
+import { delay, flatMap, repeat, takeUntil, repeatWhen, retryWhen, take, concatMap, tap, delayWhen, expand, takeWhile } from 'rxjs/operators';
 import { CreateComponent } from '../create/create.component';
 import * as Feather from 'feather-icons';
 import { SortableHeader, SortEvent } from 'src/app/shared/table/sortable.directive';
@@ -10,12 +10,13 @@ import { ApiService } from 'src/app/shared/api.service';
 import { SocketService } from 'src/app/shared/socket.service';
 import { element } from 'protractor';
 import { TabbarService } from 'src/app/shared/tabbar.service';
+import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
-  providers: [ApiService, SocketService, DecimalPipe]
+  providers: [ApiService, SocketService, DecimalPipe, DateAgoPipe]
 })
 export class ListComponent implements AfterViewInit {
 
@@ -49,30 +50,75 @@ export class ListComponent implements AfterViewInit {
       console.log('delete')
       console.log(event)
       let index = this.data.findIndex(element => element.name === event)
+      console.log(index)
       this.data.splice(index, 1);
       return;
     })
 
     socketService.getEvent().subscribe(event => {
-      console.log('process: ' + event['process']['status'])
+      if (event['data']) {
+        console.log('exception')
+        console.log(event)
+        return
+      }
+      console.log(event)
+
+      // console.log('process: ' + event['process']['status'])
 
       if (event['event'] === 'online') {
-        console.log('online2')
         let proc: Process = this.data.find(element => element.pm_id === event['process']['pm_id'])
 
         if (!proc) {
-          console.log(event['uiprocess'][0])
-          this.data.push(event['uiprocess'][0])
+          this.data.push(event['uiprocess'])
+          proc = event['uiprocess']
+        } else {
+          proc.pm2_env.status = event['uiprocess'].pm2_env.status
+          proc.pm2_env.pm_uptime = event['uiprocess'].pm2_env.pm_uptime
+        }
+
+        proc.pm2_env.status = event['uiprocess'].pm2_env.status
+        proc.pm2_env.pm_uptime = event['uiprocess'].pm2_env.pm_uptime
+
+        console.log('uiprocess: ' + event['uiprocess'].pm2_env.status)
+
+        if (event['uiprocess'].pm2_env.status === 'launching') {
+          console.log('start describe ' + event['uiprocess'].name)
+          this.socketService.describe(event['uiprocess'].name)
+          this.socketService.getDescribe().pipe(takeWhile(procc => procc[0]['pm2_env']['status'] !== 'online', true)).subscribe((proccc) => {
+            console.log('launch see')
+            console.log(proccc[0]['name'] + " - " + proccc[0]['pm2_env']['status'])
+            proc.pm2_env.status = proccc[0]['pm2_env']['status']
+            proc.pm2_env.pm_uptime = proccc[0]['pm2_env']['pm_uptime']
+            this.socketService.describe(proccc[0]['name'])
+          })
         }
 
         return;
       }
 
+      if (event['uiprocess'].pm2_env.status === 'stopped') {
+        console.log('start describe stopped ' + event['uiprocess'].name)
+        this.socketService.describe(event['uiprocess'].name)
+        this.socketService.getDescribe().pipe(delay(500)).subscribe((proccc) => {
+          if (proccc[0]) {
+            console.log(proccc[0])
+          } else {
+            let index = this.data.findIndex(element => element.name === event['uiprocess'].name)
+            console.log('i ' + index)
+            this.data.splice(index, 1);
+          }
+        })
+      }
+
       let proc: Process = this.data.find(element => element.pm_id === event['process']['pm_id'])
       if (proc) {
-        proc.pm2_env.status = event['process']['status']
-        proc.pm2_env.pm_uptime = event['process']['pm_uptime']
+        if (proc.pm2_env && event['uiprocess']) {
+          proc.pm2_env.status = event['uiprocess'].pm2_env.status
+          proc.pm2_env.pm_uptime = event['uiprocess'].pm2_env.pm_uptime
+        }
       }
+
+      // console.log('uiprocess: ' + event['uiprocess'].pm2_env.status)
     })
   }
 
