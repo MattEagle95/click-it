@@ -1,38 +1,23 @@
-<nav class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow mb-3">
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><span data-feather="cpu"></span> Process
-    {{processId}}</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-    <ul class="nav mr-auto">
-        <li class="nav-item">
-            <a class="nav-link text-dark" [routerLink]="['/process', processId, 'general']" routerLinkActive="active">
-        General
-      </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" routerLink="/processes" routerLinkActive="active">
-        Advanced
-      </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" routerLink="/processes" routerLinkActive="active">
-        Control flow
-      </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" [routerLink]="['/process', processId, 'logs']" routerLinkActive="active">
-        Logs
-      </a>
-        </li>
-    </ul>
-    <nav class="nav px-3 text-dark">
-        <i-feather name="refresh-cw" *ngIf="process?.pm2_env?.status === 'online'" class="ico text-primary" placement="top" ngbTooltip="Restart"></i-feather>
-        <i-feather name="stop-circle" *ngIf="process?.pm2_env?.status === 'online'" class="ico text-danger" placement="top" ngbTooltip="Stop"></i-feather>
-        <i-feather name="play-circle" *ngIf="process?.pm2_env?.status !== 'online'" class="ico text-success" placement="top" ngbTooltip="Start"></i-feather>
+<div class="row pt-4">
+  <div class="col-2"></div>
+  <div class="col-8 d-flex justify-content-between align-items-center">
+    <h3>Proccess: {{process?.name}}</h3>
+    <nav class="nav text-dark">
+      <button class="btn btn-sm btn-outline-primary" *ngIf="process?.pm2_env?.status === 'online'">
+        <i-feather name="refresh-cw" class="ico text-primary" placement="top" ngbTooltip="Restart"></i-feather>
+      </button>
+      <button class="btn btn-sm btn-outline-danger" *ngIf="process?.pm2_env?.status === 'online'">
+        <i-feather name="stop-circle" class="ico text-danger" placement="top" ngbTooltip="Stop"></i-feather>
+      </button>
+      <button class="btn btn-sm btn-outline-success" *ngIf="process?.pm2_env?.status !== 'online'">
+        <i-feather name="play-circle" class="ico text-success" placement="top" ngbTooltip="Start"></i-feather>
+      </button>
+      <button class="btn btn-sm btn-outline-danger">
         <i-feather name="trash" class="ico text-danger" placement="top" ngbTooltip="Delete"></i-feather>
+      </button>
     </nav>
-</nav>
+  </div>
+</div>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <router-outlet></router-outlet>

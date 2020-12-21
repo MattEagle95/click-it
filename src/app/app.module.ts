@@ -24,6 +24,8 @@ import { MainComponent } from './modules/layout/main/main.component';
 import { allIcons } from 'angular-feather/icons';
 import { DeleteConfirmationModalComponent } from './shared/modals/delete-confirmation-modal/delete-confirmation-modal.component';
 import { PipeModule } from './shared/pipe/pipe.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
 
@@ -45,6 +47,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

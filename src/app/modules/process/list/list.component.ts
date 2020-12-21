@@ -11,6 +11,7 @@ import { SocketService } from 'src/app/shared/socket.service';
 import { element } from 'protractor';
 import { TabbarService } from 'src/app/shared/tabbar.service';
 import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
+import { CreateSimpleComponent } from '../create-simple/create-simple.component';
 
 @Component({
   selector: 'app-list',
@@ -160,6 +161,12 @@ export class ListComponent implements AfterViewInit {
   create() {
     console.log('test')
     const modalRef = this.modalService.open(CreateComponent, { size: 'lg' });
+    modalRef.componentInstance.name = 'World';
+  }
+
+  createScriptpath() {
+    console.log('create scriptpath')
+    const modalRef = this.modalService.open(CreateSimpleComponent, { size: 'lg' });
     modalRef.componentInstance.name = 'World';
   }
 

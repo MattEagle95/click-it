@@ -66,7 +66,7 @@ export class ApiService {
   }
 
   describe(name: string) {
-    return this.http.post(this.getUrl('describe'), { name: name });
+    return this.http.get(`${this.getUrl('describe')}/${name}`);
   }
 
   list(): Observable<any> {

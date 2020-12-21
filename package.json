@@ -28,6 +28,8 @@
     "bootstrap-icons": "^1.0.0",
     "feather-icons": "^4.28.0",
     "ngx-socket-io": "^3.2.0",
+    "ngx-toastr": "^10.0.4",
+    "path": "^0.12.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

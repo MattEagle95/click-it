@@ -18,6 +18,8 @@ import { GeneralComponent } from './view/general/general.component';
 import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
 import { PipeModule } from 'src/app/shared/pipe/pipe.module';
 import { LogsComponent } from './view/logs/logs.component';
+import { CreateSimpleComponent } from './create-simple/create-simple.component';
+import { LogNotificationsComponent } from './log-notifications/log-notifications.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { LogsComponent } from './view/logs/logs.component';
     ViewComponent,
     AdvancedComponent,
     GeneralComponent,
-    LogsComponent
+    LogsComponent,
+    CreateSimpleComponent,
+    LogNotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +51,6 @@ import { LogsComponent } from './view/logs/logs.component';
     ListComponent
   ],
   providers: [],
-  entryComponents: [CreateComponent]
+  entryComponents: [CreateSimpleComponent, CreateComponent]
 })
 export class ProcessModule { }

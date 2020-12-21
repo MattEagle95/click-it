@@ -6,6 +6,7 @@ import * as Feather from 'feather-icons';
 import { SortableHeader } from 'src/app/shared/table/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { NotifyService } from 'src/app/shared/notify.service';
 
 @Component({
   selector: 'app-logs',
@@ -26,7 +27,7 @@ export class LogsComponent implements OnInit, AfterViewInit {
 
   @ViewChild('logdiv', { static: false }) logdiv: ElementRef;
 
-  constructor(public service: ApiService, private modalService: NgbModal, private socketService: SocketService, private route: ActivatedRoute) {
+  constructor(public service: ApiService, private modalService: NgbModal, private socketService: SocketService, private route: ActivatedRoute, private notifyService: NotifyService) {
     console.log('view init')
   }
 
@@ -40,6 +41,11 @@ export class LogsComponent implements OnInit, AfterViewInit {
       this.socketService.getLog().subscribe(event => {
         if (event['process']['pm_id'].toString() === this.processId) {
           this.logs.push(event['data'])
+
+          const isError = event['data'].match(new RegExp('error', 'gmi'))
+          if (isError) {
+            this.notifyService.addLogError(event['process']['name'], event['data'])
+          }
 
           if (!this.scrolllock) {
             this.logdiv.nativeElement.scrollTop = this.logdiv.nativeElement.scrollHeight

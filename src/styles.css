@@ -13,6 +13,7 @@ html, body {
  */
 
 .sidebar {
+  font-size: 0.75rem;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -71,6 +72,10 @@ html, body {
 /*
  * Navbar
  */
+
+ .navbar {
+   font-size: 0.75rem;
+ }
 
 .navbar-brand {
   padding-top: .75rem;
