@@ -13,7 +13,6 @@ import { UserComponent } from './modules/user/user.component';
 import { ListComponent } from './modules/user/list/list.component';
 import { SidebarComponent } from './modules/layout/sidebar/sidebar.component';
 import { HeaderComponent } from './modules/layout/header/header.component';
-import { SettingsComponent } from './modules/settings/settings.component';
 import { SystemComponent } from './modules/system/system.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DecimalPipe } from '@angular/common';
@@ -26,6 +25,7 @@ import { DeleteConfirmationModalComponent } from './shared/modals/delete-confirm
 import { PipeModule } from './shared/pipe/pipe.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { SortableHeader } from './shared/table/sortable.directive';
 
 const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
 
@@ -35,7 +35,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
     AuthComponent,
     UserComponent,
     ListComponent,
-    SettingsComponent,
     NgbdModalConfirm,
     NgbdModalConfirmAutofocus,
     SidebarComponent,
@@ -43,7 +42,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3500', options: {} };
     SystemComponent,
     TabbarComponent,
     MainComponent,
-    DeleteConfirmationModalComponent
+    DeleteConfirmationModalComponent,
+    SortableHeader
   ],
   imports: [
     BrowserModule,
