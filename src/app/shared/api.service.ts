@@ -6,6 +6,7 @@ import { TokenStorageService } from './token-storage.service';
 import { SortColumn, SortDirection } from './table/sortable.directive';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { Process } from './process';
 
 interface SearchResultProcess {
   countries: Process[];

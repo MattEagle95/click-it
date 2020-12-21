@@ -12,6 +12,7 @@ import { element } from 'protractor';
 import { TabbarService } from 'src/app/shared/tabbar.service';
 import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
 import { CreateSimpleComponent } from '../create-simple/create-simple.component';
+import { Process } from 'src/app/shared/process';
 
 @Component({
   selector: 'app-list',

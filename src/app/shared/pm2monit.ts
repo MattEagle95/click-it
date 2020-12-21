@@ -1,4 +1,4 @@
-interface PM2MONIT {
+export interface PM2MONIT {
   memory;
   cpu;
 }

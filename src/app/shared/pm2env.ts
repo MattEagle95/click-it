@@ -1,4 +1,4 @@
-interface PM2ENV {
+export interface PM2ENV {
   name;
   pm_exec_path;
   pm_out_log_path;
